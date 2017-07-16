@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "todoList",
+  "description": "write down what you want to do.",
+  "short_name": "todoList",
+  "version": "0.1",
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "debugger",
+    "storage"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'"
+}

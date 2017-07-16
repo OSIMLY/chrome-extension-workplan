@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>taskList</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet"
+            href="./css/element.css">
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+
+            .el-row {
+                margin-bottom: 10px;
+            }
+
+            .el-row:last-child {
+                margin-bottom: 0;
+            }
+            .el-date-editor.el-input {
+                float: right;
+            }
+        </style>
+    </head>
+
+    <body style="width:688px">
+        <div id="app">
+            <el-row>
+                <el-button @click="onPush"
+                    type="success"
+                    size="small">添加</el-button>
+                <el-date-picker v-model="filterDate"
+                    size="small"
+                    type="date"
+                    placeholder="选择日期"
+                    :picker-options="pickerOptions0">
+                </el-date-picker>
+            </el-row>
+            <el-row>
+                <el-table :data="taskStack"
+                    border>
+                    <el-table-column prop="title"
+                        min-width="60"
+                        label="主题">
+                        <template scope="scope">
+                            <el-input v-if="scope.$index===0&&lastTaskStarted"
+                                v-model="scope.row.title"></el-input>
+                            <span v-else>{{scope.row.title}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="timeLog"
+                        min-width="20"
+                        align="center"
+                        label="开始时间">
+                        <template scope="scope">
+                            {{getDateString(scope.row.timeLog[0].start)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作"
+                        min-width="20"
+                        align="center">
+                        <template scope="scope">
+                            <el-button v-if="!scope.row.timeLog[0].start"
+                                size="mini"
+                                type="success"
+                                @click="onTaskStart(scope.row.id)">开始</el-button>
+                            <el-button v-if="scope.row.timeLog[0].start"
+                                size="mini"
+                                type="warning"
+                                @click="onTaskEnd(scope.row.id)">完成</el-button>
+                            <el-button size="mini"
+                                type="danger"
+                                @click="onTaskDelete(scope.row.id)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+            <el-row>
+                <el-table :data="taskList"
+                    border
+                    show-summary
+                    :summary-method="getSummaries">
+                    <el-table-column prop="title"
+                        min-width="60"
+                        label="主题">
+                    </el-table-column>
+                    <el-table-column :formatter="getDuration"
+                        min-width="20"
+                        label="持续时间 (H)"
+                        align="center">
+                    </el-table-column>
+                    <el-table-column label="操作"
+                        min-width="20"
+                        align="center">
+                        <template scope="scope">
+                            <el-button size="mini"
+                                type="danger"
+                                @click="onTaskListDelete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+        </div>
+        <script src="./js/vue.js"></script>
+        <script src="./js/element.js"></script>
+        <script src="./js/date.js"></script>
+        <script src="./js/main.js"></script>
+    </body>
+
+</html>
